@@ -2,14 +2,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Sparkles, Target, DollarSign, Users, Lightbulb, Megaphone, BarChart2, FlaskConical, ArrowRight } from "lucide-react";
+import { Sparkles, Target, DollarSign, Users } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import OutputSection from "@/components/OutputSection";
-import StageIndicator from "@/components/StageIndicator";
 
 const campaignSchema = z.object({
   productName: z.string().min(2, "Product name must be at least 2 characters"),
@@ -25,13 +24,6 @@ const campaignSchema = z.object({
 });
 
 type CampaignFormData = z.infer<typeof campaignSchema>;
-
-const STAGES = [
-  { id: 1, label: "Campaign Ideas", icon: Lightbulb },
-  { id: 2, label: "Ad Copies", icon: Megaphone },
-  { id: 3, label: "Channel Mix", icon: BarChart2 },
-  { id: 4, label: "A/B Test Plan", icon: FlaskConical },
-];
 
 export default function CampaignGenerator() {
   const [submitted, setSubmitted] = useState(false);
@@ -96,22 +88,6 @@ export default function CampaignGenerator() {
               <p className="text-muted-foreground text-lg max-w-xl mx-auto leading-relaxed">
                 Fill in your product details and we'll generate tailored campaign ideas, ad copies, channel recommendations, and A/B testing plans — one stage at a time.
               </p>
-            </div>
-
-            {/* Stage preview pills */}
-            <div className="flex flex-wrap gap-2 justify-center mb-10">
-              {STAGES.map((stage, idx) => (
-                <div key={stage.id} className="flex items-center gap-2">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border text-sm text-muted-foreground">
-                    <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground">
-                      {stage.id}
-                    </div>
-                    <stage.icon className="w-3.5 h-3.5" />
-                    {stage.label}
-                  </div>
-                  {idx < STAGES.length - 1 && <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />}
-                </div>
-              ))}
             </div>
 
             {/* Form Card */}
@@ -399,9 +375,6 @@ export default function CampaignGenerator() {
                       <Sparkles className="w-4 h-4 mr-2" />
                       Generate Campaign Strategy
                     </Button>
-                    <p className="text-center text-xs text-muted-foreground mt-3">
-                      Generates 4 stages: Ideas → Ad Copy → Channels → A/B Tests
-                    </p>
                   </div>
                 </form>
               </Form>
