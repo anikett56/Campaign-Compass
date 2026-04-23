@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Campaign Generator"
+version = "1.0.0"
+id = "artifacts/campaign-generator"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18521
+
+[services.development]
+run = "pnpm --filter @workspace/campaign-generator run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/campaign-generator", "run", "build" ]
+publicDir = "artifacts/campaign-generator/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18521"
+BASE_PATH = "/"
