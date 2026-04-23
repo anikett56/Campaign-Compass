@@ -6,4 +6,20 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./campaignInput";
+export * from "./campaignInsight";
+export * from "./campaignInsightType";
+export * from "./campaignItem";
+export * from "./campaignItemContent";
+export * from "./campaignItemEffort";
+export * from "./campaignItemPriority";
+export * from "./campaignItemType";
+export * from "./campaignMetadata";
+export * from "./campaignMetadataEffort";
+export * from "./campaignMetadataPriority";
+export * from "./campaignMetadataRisk";
+export * from "./campaignResult";
+export * from "./channelAllocation";
+export * from "./channelAllocationPriority";
+export * from "./errorResponse";
 export * from "./healthStatus";

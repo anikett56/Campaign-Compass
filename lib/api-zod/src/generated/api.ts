@@ -14,3 +14,68 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Processes campaign inputs and returns AI-enhanced strategy with smart logic scoring
+ * @summary Generate campaign strategy
+ */
+export const generateCampaignBodyProductNameMin = 2;
+
+export const generateCampaignBodyProductDescriptionMin = 10;
+
+export const generateCampaignBodyTargetAudienceMin = 5;
+
+export const GenerateCampaignBody = zod.object({
+  productName: zod.string().min(generateCampaignBodyProductNameMin),
+  productDescription: zod
+    .string()
+    .min(generateCampaignBodyProductDescriptionMin),
+  targetAudience: zod.string().min(generateCampaignBodyTargetAudienceMin),
+  audienceAge: zod.string(),
+  audienceLocation: zod.string(),
+  budget: zod.string(),
+  customBudget: zod.string().nullish(),
+  campaignGoal: zod.string(),
+  timeline: zod.string(),
+  industry: zod.string(),
+});
+
+export const GenerateCampaignResponse = zod.object({
+  summary: zod.string(),
+  items: zod.array(
+    zod.object({
+      id: zod.string(),
+      type: zod.enum(["campaign_idea", "ad_copy", "channel", "ab_test"]),
+      title: zod.string(),
+      description: zod.string(),
+      content: zod.record(zod.string(), zod.unknown()),
+      priority: zod.enum(["High", "Medium", "Low"]),
+      effort: zod.enum(["High", "Medium", "Low"]),
+      score: zod.number(),
+    }),
+  ),
+  insights: zod.array(
+    zod.object({
+      type: zod.enum(["tip", "warning", "opportunity", "risk"]),
+      message: zod.string(),
+    }),
+  ),
+  channelAllocation: zod.array(
+    zod.object({
+      channel: zod.string(),
+      percentage: zod.number(),
+      estimatedMonthlySpend: zod.string(),
+      priority: zod.enum(["High", "Medium", "Low"]),
+    }),
+  ),
+  metadata: zod.object({
+    priority: zod.enum(["High", "Medium", "Low"]),
+    risk: zod.enum(["High", "Medium", "Low"]),
+    effort: zod.enum(["High", "Medium", "Low"]),
+    overallScore: zod.number(),
+    classification: zod.string(),
+    budgetTier: zod.string(),
+    goalAlignment: zod.number(),
+  }),
+  generatedAt: zod.string(),
+});

@@ -8,3 +8,144 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface ErrorResponse {
+  error: string;
+  /** @nullable */
+  details?: string | null;
+}
+
+export interface CampaignInput {
+  /** @minLength 2 */
+  productName: string;
+  /** @minLength 10 */
+  productDescription: string;
+  /** @minLength 5 */
+  targetAudience: string;
+  audienceAge: string;
+  audienceLocation: string;
+  budget: string;
+  /** @nullable */
+  customBudget?: string | null;
+  campaignGoal: string;
+  timeline: string;
+  industry: string;
+}
+
+export type CampaignItemType =
+  (typeof CampaignItemType)[keyof typeof CampaignItemType];
+
+export const CampaignItemType = {
+  campaign_idea: "campaign_idea",
+  ad_copy: "ad_copy",
+  channel: "channel",
+  ab_test: "ab_test",
+} as const;
+
+export type CampaignItemContent = { [key: string]: unknown };
+
+export type CampaignItemPriority =
+  (typeof CampaignItemPriority)[keyof typeof CampaignItemPriority];
+
+export const CampaignItemPriority = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export type CampaignItemEffort =
+  (typeof CampaignItemEffort)[keyof typeof CampaignItemEffort];
+
+export const CampaignItemEffort = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export interface CampaignItem {
+  id: string;
+  type: CampaignItemType;
+  title: string;
+  description: string;
+  content: CampaignItemContent;
+  priority: CampaignItemPriority;
+  effort: CampaignItemEffort;
+  score: number;
+}
+
+export type CampaignInsightType =
+  (typeof CampaignInsightType)[keyof typeof CampaignInsightType];
+
+export const CampaignInsightType = {
+  tip: "tip",
+  warning: "warning",
+  opportunity: "opportunity",
+  risk: "risk",
+} as const;
+
+export interface CampaignInsight {
+  type: CampaignInsightType;
+  message: string;
+}
+
+export type CampaignMetadataPriority =
+  (typeof CampaignMetadataPriority)[keyof typeof CampaignMetadataPriority];
+
+export const CampaignMetadataPriority = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export type CampaignMetadataRisk =
+  (typeof CampaignMetadataRisk)[keyof typeof CampaignMetadataRisk];
+
+export const CampaignMetadataRisk = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export type CampaignMetadataEffort =
+  (typeof CampaignMetadataEffort)[keyof typeof CampaignMetadataEffort];
+
+export const CampaignMetadataEffort = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export interface CampaignMetadata {
+  priority: CampaignMetadataPriority;
+  risk: CampaignMetadataRisk;
+  effort: CampaignMetadataEffort;
+  overallScore: number;
+  classification: string;
+  budgetTier: string;
+  goalAlignment: number;
+}
+
+export type ChannelAllocationPriority =
+  (typeof ChannelAllocationPriority)[keyof typeof ChannelAllocationPriority];
+
+export const ChannelAllocationPriority = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export interface ChannelAllocation {
+  channel: string;
+  percentage: number;
+  estimatedMonthlySpend: string;
+  priority: ChannelAllocationPriority;
+}
+
+export interface CampaignResult {
+  summary: string;
+  items: CampaignItem[];
+  insights: CampaignInsight[];
+  channelAllocation: ChannelAllocation[];
+  metadata: CampaignMetadata;
+  generatedAt: string;
+}

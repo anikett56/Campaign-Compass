@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: campaign
+    description: Campaign generation operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /generate:
+    post:
+      operationId: generateCampaign
+      tags: [campaign]
+      summary: Generate campaign strategy
+      description: Processes campaign inputs and returns AI-enhanced strategy with smart logic scoring
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignInput"
+      responses:
+        "200":
+          description: Campaign strategy generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CampaignResult"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +69,170 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: ["string", "null"]
+      required:
+        - error
+
+    CampaignInput:
+      type: object
+      properties:
+        productName:
+          type: string
+          minLength: 2
+        productDescription:
+          type: string
+          minLength: 10
+        targetAudience:
+          type: string
+          minLength: 5
+        audienceAge:
+          type: string
+        audienceLocation:
+          type: string
+        budget:
+          type: string
+        customBudget:
+          type: ["string", "null"]
+        campaignGoal:
+          type: string
+        timeline:
+          type: string
+        industry:
+          type: string
+      required:
+        - productName
+        - productDescription
+        - targetAudience
+        - audienceAge
+        - audienceLocation
+        - budget
+        - campaignGoal
+        - timeline
+        - industry
+
+    CampaignItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [campaign_idea, ad_copy, channel, ab_test]
+        title:
+          type: string
+        description:
+          type: string
+        content:
+          type: object
+          additionalProperties: true
+        priority:
+          type: string
+          enum: [High, Medium, Low]
+        effort:
+          type: string
+          enum: [High, Medium, Low]
+        score:
+          type: number
+      required:
+        - id
+        - type
+        - title
+        - description
+        - content
+        - priority
+        - effort
+        - score
+
+    CampaignInsight:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [tip, warning, opportunity, risk]
+        message:
+          type: string
+      required:
+        - type
+        - message
+
+    CampaignMetadata:
+      type: object
+      properties:
+        priority:
+          type: string
+          enum: [High, Medium, Low]
+        risk:
+          type: string
+          enum: [High, Medium, Low]
+        effort:
+          type: string
+          enum: [High, Medium, Low]
+        overallScore:
+          type: number
+        classification:
+          type: string
+        budgetTier:
+          type: string
+        goalAlignment:
+          type: number
+      required:
+        - priority
+        - risk
+        - effort
+        - overallScore
+        - classification
+        - budgetTier
+        - goalAlignment
+
+    ChannelAllocation:
+      type: object
+      properties:
+        channel:
+          type: string
+        percentage:
+          type: number
+        estimatedMonthlySpend:
+          type: string
+        priority:
+          type: string
+          enum: [High, Medium, Low]
+      required:
+        - channel
+        - percentage
+        - estimatedMonthlySpend
+        - priority
+
+    CampaignResult:
+      type: object
+      properties:
+        summary:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignItem"
+        insights:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignInsight"
+        channelAllocation:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChannelAllocation"
+        metadata:
+          $ref: "#/components/schemas/CampaignMetadata"
+        generatedAt:
+          type: string
+      required:
+        - summary
+        - items
+        - insights
+        - channelAllocation
+        - metadata
+        - generatedAt

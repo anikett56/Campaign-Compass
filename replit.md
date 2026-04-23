@@ -16,6 +16,27 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## AdMojo Campaign Generator
+
+**Product**: Multi-stage AI campaign generator at `artifacts/campaign-generator/`.
+**API**: Express 5 server at `artifacts/api-server/`.
+
+### Architecture
+- Form inputs → POST `/api/generate` → smart logic engine → structured `CampaignResult`
+- Frontend uses `useGenerateCampaign` React Query mutation (from `@workspace/api-client-react`)
+- Backend: `artifacts/api-server/src/lib/campaignEngine.ts` — rule-based scoring engine
+- Route: `artifacts/api-server/src/routes/campaign.ts` — registered in `routes/index.ts`
+- Zod schemas in `@workspace/api-zod` (generated via `codegen`)
+
+### Stages
+1. Campaign Ideas — 3 scored + prioritised campaign concepts
+2. Ad Copies — 4 platform-specific copy variants (social, search, email)
+3. Channel Mix — budget allocation with visual bar chart, ₹ spend estimates
+4. A/B Test Plan — 3 structured experiments with hypothesis + variants
+
+### Budget tiers (₹)
+under-10k | 10k-50k | 50k-1l | 1l-5l | 5l-10l | 10l+ | custom
+
 ## Key Commands
 
 - `pnpm run typecheck` — full typecheck across all packages

@@ -5,18 +5,26 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  CampaignInput,
+  CampaignResult,
+  ErrorResponse,
+  HealthStatus,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +107,90 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Processes campaign inputs and returns AI-enhanced strategy with smart logic scoring
+ * @summary Generate campaign strategy
+ */
+export const getGenerateCampaignUrl = () => {
+  return `/api/generate`;
+};
+
+export const generateCampaign = async (
+  campaignInput: CampaignInput,
+  options?: RequestInit,
+): Promise<CampaignResult> => {
+  return customFetch<CampaignResult>(getGenerateCampaignUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(campaignInput),
+  });
+};
+
+export const getGenerateCampaignMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof generateCampaign>>,
+    TError,
+    { data: BodyType<CampaignInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof generateCampaign>>,
+  TError,
+  { data: BodyType<CampaignInput> },
+  TContext
+> => {
+  const mutationKey = ["generateCampaign"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof generateCampaign>>,
+    { data: BodyType<CampaignInput> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return generateCampaign(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type GenerateCampaignMutationResult = NonNullable<
+  Awaited<ReturnType<typeof generateCampaign>>
+>;
+export type GenerateCampaignMutationBody = BodyType<CampaignInput>;
+export type GenerateCampaignMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Generate campaign strategy
+ */
+export const useGenerateCampaign = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof generateCampaign>>,
+    TError,
+    { data: BodyType<CampaignInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof generateCampaign>>,
+  TError,
+  { data: BodyType<CampaignInput> },
+  TContext
+> => {
+  return useMutation(getGenerateCampaignMutationOptions(options));
+};
