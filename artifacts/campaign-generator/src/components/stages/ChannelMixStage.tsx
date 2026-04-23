@@ -78,12 +78,12 @@ const CHANNELS = [
 function getBudgetLabel(budget: string, custom?: string) {
   if (budget === "custom") return custom || "Custom";
   const map: Record<string, string> = {
-    "under-1k": "< $1,000/mo",
-    "1k-5k": "$1k–$5k/mo",
-    "5k-10k": "$5k–$10k/mo",
-    "10k-50k": "$10k–$50k/mo",
-    "50k-100k": "$50k–$100k/mo",
-    "100k+": "$100k+/mo",
+    "under-10k": "< ₹10,000/mo",
+    "10k-50k": "₹10k–₹50k/mo",
+    "50k-1l": "₹50k–₹1L/mo",
+    "1l-5l": "₹1L–₹5L/mo",
+    "5l-10l": "₹5L–₹10L/mo",
+    "10l+": "₹10L+/mo",
   };
   return map[budget] || budget;
 }

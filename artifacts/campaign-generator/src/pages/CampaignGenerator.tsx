@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Sparkles, Target, DollarSign, Users, ChevronRight, Lightbulb, Megaphone, BarChart2, FlaskConical, ArrowRight } from "lucide-react";
+import { Sparkles, Target, DollarSign, Users, Lightbulb, Megaphone, BarChart2, FlaskConical, ArrowRight } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -75,20 +75,7 @@ export default function CampaignGenerator() {
             <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-primary" />
             </div>
-            <span className="font-display font-semibold text-foreground tracking-tight">CampaignForge</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {STAGES.map((stage, idx) => (
-              <div key={stage.id} className="flex items-center gap-2">
-                <div className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${submitted ? "bg-primary/10 border-primary/30 text-primary" : "bg-muted border-border text-muted-foreground"}`}>
-                  <stage.icon className="w-3 h-3" />
-                  <span>{stage.label}</span>
-                </div>
-                {idx < STAGES.length - 1 && (
-                  <ChevronRight className="w-3 h-3 text-muted-foreground hidden sm:block" />
-                )}
-              </div>
-            ))}
+            <span className="font-display font-semibold text-foreground tracking-tight">AdMojo</span>
           </div>
         </div>
       </header>
@@ -339,12 +326,12 @@ export default function CampaignGenerator() {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="under-1k">Under $1,000</SelectItem>
-                                  <SelectItem value="1k-5k">$1,000 – $5,000</SelectItem>
-                                  <SelectItem value="5k-10k">$5,000 – $10,000</SelectItem>
-                                  <SelectItem value="10k-50k">$10,000 – $50,000</SelectItem>
-                                  <SelectItem value="50k-100k">$50,000 – $100,000</SelectItem>
-                                  <SelectItem value="100k+">$100,000+</SelectItem>
+                                  <SelectItem value="under-10k">Under ₹10,000</SelectItem>
+                                  <SelectItem value="10k-50k">₹10,000 – ₹50,000</SelectItem>
+                                  <SelectItem value="50k-1l">₹50,000 – ₹1,00,000</SelectItem>
+                                  <SelectItem value="1l-5l">₹1 Lakh – ₹5 Lakh</SelectItem>
+                                  <SelectItem value="5l-10l">₹5 Lakh – ₹10 Lakh</SelectItem>
+                                  <SelectItem value="10l+">₹10 Lakh+</SelectItem>
                                   <SelectItem value="custom">Custom amount</SelectItem>
                                 </SelectContent>
                               </Select>
